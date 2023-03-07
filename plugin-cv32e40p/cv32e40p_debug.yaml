@@ -1,0 +1,63 @@
+# DEBUG YAML Spec for the CV32E40P
+# https://riscv-config.readthedocs.io/en/latest/yaml-specs.html#debug-yaml-spec
+# SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
+
+hart_ids: [0]
+hart0: &hart0
+    Debug_Spec_Version: '1.0.0'
+    supported_xlen: [32]
+    debug_mode: True
+    dcsr:
+      reset-val: 0x40000003
+      rv32:
+        accessible: True
+        prv:
+          implemented: True
+          type:
+            ro_constant: 0x3
+        step:
+          implemented: True
+        nmip:
+          implemented: True
+          type:
+            ro_constant: 0x0
+        mprven:
+          implemented: True
+          type:
+            ro_constant: 0x0
+        cause:
+          implemented: True
+        stoptime:
+          implemented: True
+          type:
+            ro_constant: 0x0
+        stopcount:
+          implemented: True
+          type:
+            ro_constant: 0x0
+        stepie:
+          implemented: True
+        ebreaku:
+          implemented: True
+          type:
+            ro_constant: 0x0
+        ebreaks:
+          implemented: True
+          type:
+            ro_constant: 0x0
+        ebreakm:
+          implemented: True
+          type:
+            ro_constant: 0x0
+        debugver:
+          implemented: True
+          type:
+            ro_constant: 0x4
+    dpc:
+      reset-val: 0x0
+      rv32:
+        accessible: True
+    dscratch0:
+      reset-val: 0x0
+      rv32:
+        accessible: True

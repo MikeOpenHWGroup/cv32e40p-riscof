@@ -1,15 +1,20 @@
+# ISA YAML Spec for the CV32E40P
+# https://riscv-config.readthedocs.io/en/latest/yaml-specs.html#isa-yaml-spec
+# SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
+
+Device: CV32E40Pv1.0.0
 hart_ids: [0]
-mtval_update: 0b11110011
+# TODO: mtval_update: 0b11110011
 hart0:
-  ISA: RV32IMCUZicsr_Zifencei_Zba_Zbb_Zbc_Zbs
+  ISA: RV32IMCZicsr_Zifencei
   physical_addr_sz: 32
-  User_Spec_Version: "2.3"
+  User_Spec_Version: "2.3" # TODO: what is v2.3?
   Privilege_Spec_Version: "1.11"
-  hw_data_misaligned_support: false
-  pmp_granularity: 4
+  hw_data_misaligned_support: True
+#  pmp_granularity: 4  # TODO: can this be set to zero or deleted?
   supported_xlen: [32]
   misa:
-    reset-val: 0x40101104
+    reset-val: 0x40001104
     rv32:
       accessible: true
       mxl:
@@ -27,6 +32,6 @@ hart0:
             warl:
                dependency_fields: []
                legal:
-                 - extensions[25:0] in [0x0101104]
+                 - extensions[25:0] in [0x0001104]
                wr_illegal:
                  - unchanged
