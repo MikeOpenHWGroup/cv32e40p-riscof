@@ -15,8 +15,8 @@ from riscof.pluginTemplate import pluginTemplate
 
 logger = logging.getLogger()
 
-class neorv32(pluginTemplate):
-    __model__ = "neorv32"
+class cv32e40p(pluginTemplate):
+    __model__ = "cv32e40p"
 
     #TODO: please update the below to indicate family, version, etc of your DUT.
     __version__ = "INITIAL"
@@ -36,7 +36,7 @@ class neorv32(pluginTemplate):
         # test-bench produced by a simulator (like verilator, vcs, incisive, etc). In case of an iss or
         # emulator, this variable could point to where the iss binary is located. If 'PATH variable
         # is missing in the config.ini we can hardcode the alternate here.
-        self.dut_exe = os.path.join(config['PATH'] if 'PATH' in config else "","neorv32")
+        self.dut_exe = os.path.join(config['PATH'] if 'PATH' in config else "","cv32e40p")
 
         # Number of parallel jobs that can be spawned off by RISCOF
         # for various actions performed in later functions, specifically to run the tests in
@@ -81,8 +81,13 @@ class neorv32(pluginTemplate):
          -I '+self.pluginpath+'/env/\
          -I ' + archtest_env + ' {2} -o {3} {4}'
 
-       # prepare simulation (GHDL)
-       execute = 'sh ./sim/ghdl_setup.sh'
+       ## prepare simulation (GHDL)
+       #execute = 'sh ./sim/ghdl_setup.sh'
+       #logger.debug('DUT executing ' + execute)
+       #utils.shellCommand(execute).run()
+
+       # prepare simulation with Verilator
+       execute = 'make -C ./tb verilate'
        logger.debug('DUT executing ' + execute)
        utils.shellCommand(execute).run()
 
@@ -159,7 +164,7 @@ class neorv32(pluginTemplate):
           utils.shellCommand(cmd).run(cwd=test_dir)
 
 
-          # neorv32-specific - dirrrty shell stuff! ;)
+          # cv32e40p-specific - dirrrty shell stuff! ;)
 
           # copy ELF to sim folder
           execute = 'cp -f {0}/{1} ./sim/{1}'.format(test_dir, elf)
