@@ -80,7 +80,7 @@ The final test report is made available as CSS-flavored HTML file via the [GitHi
 
 ## Device-Under-Test (DUT)
 
-The [`core_tb`](https://github.com/MikeOpenHWGroup/cv32e40p-riscof/tree/main/sim) directroy provides a simple SystemVerilog testbench
+The [`tb`](https://github.com/MikeOpenHWGroup/cv32e40p-riscof/tree/main/tb) directory provides a simple SystemVerilog testbench
 and shell scripts to simulate the CV32E40P processor using **Verilator**.
 
 The simulation scripts and the makefile for compiling and running the simulation is invoked from a DUT- specific Python script in the DUT's plugin folder

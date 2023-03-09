@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BSD-3-Clause
-// Modified for the NEORV32 RISC-V Processor by Stephan Nolting
+// Modified for the CV32E40P RISC-V Processor by Mike Thompson
 
 #ifndef _COMPLIANCE_MODEL_H
 #define _COMPLIANCE_MODEL_H
@@ -14,14 +14,12 @@
     .align 8; .global end_regstate; end_regstate:             \
     .word 4;
 
-// NEORV32: This will dump the test results (signature) via the core's UART0_SIM_MODE
-// data file output feature. The simulation is terminated via VHDL2008 "finish" statement,
-// triggered by writing 0xCAFECAFE to address 0xF0000000.
+// CV32E40P: the testbench supports a set of "virtual peripherals":
+//   - the "signature writer" dumps whatever is written to it to a flat ascii textfile.
+//   - the "status flags" virtual peripheral is used to terminate the simulation:
+//          - writing 'd123456789 to address 0x2000_0000 signals a PASS.
+//          - writing 'd1 to address 0x2000_0000 signals a FAIL.
 #define RVMODEL_HALT                                          \
-    uart0_sim_mode_init:                                      \
-      sw zero, 0xFFFFFFA0(zero);                              \
-      li   a0, (1 << 1) | (1 << 0);                           \
-      sw   a0, 0xFFFFFFA0(zero);                              \
     signature_dump:                                           \
       la   a0, begin_signature;                               \
       la   a1, end_signature;                                 \
@@ -35,10 +33,11 @@
     signature_dump_end:                                       \
       nop;                                                    \
     terminate_simulation:                                     \
-      li   a0, 0xF0000000;                                    \
-      li   a1, 0xCAFECAFE;                                    \
+      li   a0, 0x20000000;                                    \
+      li   a1, 0x1;                                           \
       sw   a1, 0(a0);                                         \
-      j    terminate_simulation
+    wait_for_interrupt_that_never_comes:                      \
+      wfi;
 
 #define RVMODEL_BOOT
 
