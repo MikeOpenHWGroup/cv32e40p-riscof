@@ -1,5 +1,6 @@
 */__*
 
+*.swp
 riscof_work
 
 *.bin
@@ -9,3 +10,10 @@ riscof_work
 *.signature
 
 *.cf
+
+*.readelf
+*.objdump
+
+cv32e40p
+verilator_obj
+simulation_results

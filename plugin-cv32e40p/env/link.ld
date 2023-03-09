@@ -3,7 +3,7 @@ ENTRY(rvtest_entry_point)
 
 SECTIONS
 {
-  . = 0x00000000;
+  . = 0x00000080;
   .text :
   {
     *(.text.init)
