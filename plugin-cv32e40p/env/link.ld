@@ -8,13 +8,17 @@ SECTIONS
   {
     *(.text.init)
     . = ALIGN(0x1000);
-    *(.tohost)
-    . = ALIGN(0x1000);
     *(.text)
+    . = ALIGN(0x1000);
+    _end = .;
+  }
+
+  . = 0x00100000;
+  .data :
+  {
     . = ALIGN(0x1000);
     *(.data)
     *(.data.string)
     *(.bss)
-    _end = .;
   }
 }

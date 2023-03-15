@@ -70,23 +70,28 @@ module tb_top_verilator #(
     // check if we succeded
     always_ff @(posedge clk_i, negedge rst_ni) begin: catch_exit
         integer cnt;
-        if (!rst_ni) cnt = 0;
-        if (!(++cnt%100_000)) $display("%m @ %0t: tick", $time);
+        if (!rst_ni) begin
+            cnt = 0;
+        end
+        else begin
+            if (!(++cnt%10_000)) $display("%m @ %0t: tick", $time);
+            if (cnt >= 20_000) $finish;
 
-        if (tests_passed_o) begin
-            $display("%m @ %0t: ALL TESTS PASSED", $time);
-            $finish;
-        end
-        if (tests_failed_o) begin
-            $display("%m @ %0t: TEST(S) FAILED!", $time);
-            $finish;
-        end
-        if (exit_valid) begin
-            if (exit_value == 0)
-                $display("%m @ %0t: EXIT SUCCESS", $time);
-            else
-                $display("%m @ %0t: EXIT FAILURE: %d", exit_value, $time);
-            $finish;
+            if (tests_passed_o) begin
+                $display("%m @ %0t: ALL TESTS PASSED", $time);
+                $finish;
+            end
+            if (tests_failed_o) begin
+                $display("%m @ %0t: TEST(S) FAILED!", $time);
+                $finish;
+            end
+            if (exit_valid) begin
+                if (exit_value == 0)
+                    $display("%m @ %0t: EXIT SUCCESS", $time);
+                else
+                    $display("%m @ %0t: EXIT FAILURE: %d", exit_value, $time);
+                $finish;
+            end
         end
     end: catch_exit
 

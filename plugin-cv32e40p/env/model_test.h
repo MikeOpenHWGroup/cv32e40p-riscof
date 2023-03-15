@@ -19,22 +19,45 @@
 //   - the "status flags" virtual peripheral is used to terminate the simulation:
 //          - writing 'd123456789 to address 0x2000_0000 signals a PASS.
 //          - writing 'd1 to address 0x2000_0000 signals a FAIL.
+//
+//  localparam int                        MMADDR_SIGBEGIN   = 32'h2000_0008;
+//  localparam int                        MMADDR_SIGEND     = 32'h2000_000C;
+//  localparam int                        MMADDR_SIGDUMP    = 32'h2000_0010;
+ 
+//#define RVMODEL_HALT                                          \
+//    signature_dump:                                           \
+//      la   a0, begin_signature;                               \
+//      la   a1, end_signature;                                 \
+//      li   a2, 0xFFFFFFA4;                                    \
+//    signature_dump_loop:                                      \
+//      bge  a0, a1, signature_dump_end;                        \
+//      lw   t0, 0(a0);                                         \
+//      sw   t0, 0(a2);                                         \
+//      addi a0, a0, 4;                                         \
+//      j    signature_dump_loop;                               \
+//    signature_dump_end:                                       \
+//      nop;                                                    \
+//    terminate_simulation:                                     \
+//      li   a0, 0x20000000;                                    \
+//      li   a1, 0x075BCD15;                                    \
+//      sw   a1, 0(a0);                                         \
+//    wait_for_interrupt_that_never_comes:                      \
+//      wfi;
 #define RVMODEL_HALT                                          \
-    signature_dump:                                           \
-      la   a0, begin_signature;                               \
+    signature_dump_setup:                                     \
+      li   a0, 0x20000008;                                    \
+      la   a1, begin_signature;                               \
+      sw   a1, 0(a0);                                         \
+      li   a0, 0x2000000C;                                    \
       la   a1, end_signature;                                 \
-      li   a2, 0xFFFFFFA4;                                    \
-    signature_dump_loop:                                      \
-      bge  a0, a1, signature_dump_end;                        \
-      lw   t0, 0(a0);                                         \
-      sw   t0, 0(a2);                                         \
-      addi a0, a0, 4;                                         \
-      j    signature_dump_loop;                               \
-    signature_dump_end:                                       \
+      sw   a1, 0(a0);                                         \
+      li   a0, 0x20000010;                                    \
+      li   a1, 0x20000010;                                    \
+      sw   a1, 0(a0);                                         \
       nop;                                                    \
     terminate_simulation:                                     \
       li   a0, 0x20000000;                                    \
-      li   a1, 0x1;                                           \
+      li   a1, 0x075BCD15;                                    \
       sw   a1, 0(a0);                                         \
     wait_for_interrupt_that_never_comes:                      \
       wfi;

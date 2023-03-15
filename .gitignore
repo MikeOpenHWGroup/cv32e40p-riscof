@@ -1,19 +1,17 @@
 */__*
 
-*.swp
+cv32e40p
+verilator_obj
+simulation_results
 riscof_work
 
+*.swp
 *.bin
 *.elf
 *.hex
 *.out
 *.signature
-
 *.cf
-
 *.readelf
 *.objdump
-
-cv32e40p
-verilator_obj
-simulation_results
+*.vcd

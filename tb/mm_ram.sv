@@ -336,13 +336,16 @@ module mm_ram
                 end else if (data_addr_i == MMADDR_SIGBEGIN) begin
                     // sets signature begin
                     sig_begin_d = data_wdata_i;
+                    $write("%m @ %0t WRITE %8x to SIGBEGIN\n", $time, data_wdata_i);
 
                 end else if (data_addr_i == MMADDR_SIGEND) begin
                     // sets signature end
                     sig_end_d = data_wdata_i;
+                    $write("%m @ %0t WRITE %8x to SIGEND\n", $time, data_wdata_i);
 
                 end else if (data_addr_i == MMADDR_SIGDUMP) begin
                     // dump signature and halt
+                    $write("%m @ %0t WRITE %8x to SIGDUMP\n", $time, data_wdata_i);
 `ifndef VERILATOR
                     if ($value$plusargs("signature=%s", sig_file)) begin
                         sig_fd = $fopen(sig_file, "w");
@@ -378,8 +381,8 @@ module mm_ram
 
                     $display("%m @ %0t: Dumping signature", $time);
                     for (logic [31:0] addr = sig_begin_q; addr < sig_end_q; addr +=4) begin
-                        $display("%x%x%x%x", dp_ram_i.mem[addr+3], dp_ram_i.mem[addr+2],
-                                             dp_ram_i.mem[addr+1], dp_ram_i.mem[addr+0]);
+                        //$display("%x%x%x%x", dp_ram_i.mem[addr+3], dp_ram_i.mem[addr+2],
+                        //                     dp_ram_i.mem[addr+1], dp_ram_i.mem[addr+0]);
                         if (use_sig_file) begin
                             $fdisplay(sig_fd, "%x%x%x%x", dp_ram_i.mem[addr+3], dp_ram_i.mem[addr+2],
                                                           dp_ram_i.mem[addr+1], dp_ram_i.mem[addr+0]);
