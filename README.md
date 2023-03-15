@@ -1,5 +1,7 @@
 # CV32E40P RISCV Compliance using RISCOF
 
+Note: still a work-in-progress.
+
 <!--
 [![neorv32-riscof](https://img.shields.io/github/actions/workflow/status/stnolting/neorv32-riscof/main.yml?branch=main&longCache=true&style=flat-square&label=neorv32-riscof&logo=Github%20Actions&logoColor=fff)](https://github.com/stnolting/neorv32-riscof/actions/workflows/main.yml)
 [![License](https://img.shields.io/github/license/stnolting/neorv32-riscof?longCache=true&style=flat-square&label=License)](https://github.com/stnolting/neorv32-riscof/blob/main/LICENSE)
@@ -22,8 +24,9 @@ Currently, the following tests are supported:
 - [x] `rv32i_m\Zifencei` - instruction stream synchronization
 
 :bulb: The general structure of this repository was setup according to the
-[RISCOF installation guide](https://riscof.readthedocs.io/en/stable/installation.html).
-
+[RISCOF installation guide](https://riscof.readthedocs.io/en/stable/installation.html),
+and borrows heavily from the
+[NEORV32 Compliance repository](https://github.com/stnolting/neorv32-riscof).
 
 ## Prerequisites
 

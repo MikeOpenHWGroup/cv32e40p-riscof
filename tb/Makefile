@@ -79,7 +79,7 @@ SV_CMP_FLAGS =
 
 # Default "custom test-program"
 CUSTOM_PROG  ?= requested_csr_por
-TEST         ?= hello-world
+#TEST         ?= hello-world
 
 ###############################################################################
 # Generate and include TEST_FLAGS_MAKE, based on the YAML test description.
@@ -244,7 +244,7 @@ endif
 verilate: testbench_verilator
 
 sanity-veri-run:
-	make veri-test TEST=hello-world
+	make veri-test
 
 testbench_verilator: $(TBSRC_VERI) $(TBSRC_PKG)
 	@echo "$(BANNER)"
@@ -273,6 +273,7 @@ veri-test: verilate $(TEST_PROGRAM_RELPATH)/$(TEST).hex
 	$(SIM_TEST_RESULTS)/verilator_executable \
 		$(VERI_FLAGS) \
 		"+firmware=$(TEST_PROGRAM_RELPATH)/$(TEST).hex" \
+		"+signature=$(TEST).sig" \
 		| tee $(VERI_LOG_DIR)/$(TEST).log
 
 # verilator specific cleanup

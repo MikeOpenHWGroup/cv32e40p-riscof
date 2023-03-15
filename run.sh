@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
 
 set -e
 
 cd $(dirname "$0")
 
-# show NEORV32 version
-echo "NEORV32 Version:"
-grep -rni 'neorv32/rtl/core/neorv32_package.vhd' -e 'hw_version_c'
+# CV32E40P git hash
+echo "CV32E40P Hash to be used:"
+cd cv32e40p
+git log -1 --pretty=format:"%H"
+cd ../
 echo ""
 sleep 2
 
