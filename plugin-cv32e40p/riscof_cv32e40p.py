@@ -1,3 +1,5 @@
+import pprint
+from os.path import relpath
 import os
 import re
 import shutil
@@ -19,7 +21,7 @@ class cv32e40p(pluginTemplate):
     __model__ = "cv32e40p"
 
     #TODO: please update the below to indicate family, version, etc of your DUT.
-    __version__ = "INITIAL"
+    __version__ = "v1.0.0"
 
     def __init__(self, *args, **kwargs):
         sclass = super().__init__(*args, **kwargs)
@@ -60,6 +62,7 @@ class cv32e40p(pluginTemplate):
             self.target_run = True
 
         # Return the parameters set above back to RISCOF for further processing.
+        logger.info('****************Finished __init__****************')
         return sclass
 
     def initialise(self, suite, work_dir, archtest_env):
@@ -92,6 +95,8 @@ class cv32e40p(pluginTemplate):
        utils.shellCommand(execute).run()
 
        # add more utility snippets here
+       logger.info('****************Finished initialise****************')
+       #exit(0)
 
     def build(self, isa_yaml, platform_yaml):
 
@@ -116,6 +121,9 @@ class cv32e40p(pluginTemplate):
       #      not please change appropriately
       self.compile_cmd = self.compile_cmd+' -mabi='+('lp64 ' if 64 in ispec['supported_xlen'] else 'ilp32 ')
 
+      logger.info('****************Finished build****************')
+      #exit(0)
+
 #The following template only uses shell commands to compile and run the tests.
 
     def runTests(self, testList):
@@ -124,7 +132,9 @@ class cv32e40p(pluginTemplate):
       # variable testname.
       for testname in testList:
 
-          logger.debug('Running Test: {0} on DUT'.format(testname))
+          #pprint.pprint(testList)
+
+          logger.info('Running Test: {0} on DUT'.format(testname))
           # for each testname we get all its fields (as described by the testList format)
           testentry = testList[testname]
 
@@ -134,8 +144,15 @@ class cv32e40p(pluginTemplate):
           # capture the directory where the artifacts of this test will be dumped/created.
           test_dir = testentry['work_dir']
 
+          # Need relative test_dir since Verilator cannot handle arbitrarily long paths.
+          cur_dir = os.getcwd()
+          rel_test_dir = relpath(test_dir, cur_dir)
+          logger.info('Relative path to test_dir: {0}'.format(rel_test_dir))
+
           # name of the elf file after compilation of the test
-          elf = 'main.elf'
+          #elf = 'main.elf'
+          elf = 'main'
+          elf_full = 'main.elf'
 
           # name of the signature file as per requirement of RISCOF. RISCOF expects the signature to
           # be named as DUT-<dut-name>.signature. The below variable creates an absolute path of
@@ -152,7 +169,7 @@ class cv32e40p(pluginTemplate):
 
           # substitute all variables in the compile command that we created in the initialize
           # function
-          cmd = self.compile_cmd.format(marchstr, self.xlen, test, elf, compile_macros)
+          cmd = self.compile_cmd.format(marchstr, self.xlen, test, elf_full, compile_macros)
 
           # just a simple logger statement that shows up on the terminal
           logger.debug('Compiling test: ' + test)
@@ -165,42 +182,55 @@ class cv32e40p(pluginTemplate):
 
 
           # cv32e40p-specific - dirrrty shell stuff! ;)
-
-          # copy ELF to sim folder
-          execute = 'cp -f {0}/{1} ./sim/{1}'.format(test_dir, elf)
-          logger.debug('DUT executing ' + execute)
+          execute = 'make -C tb veri-test TEST_PROGRAM_RELPATH=../{0} TEST={1}'.format(rel_test_dir, elf)
+          logger.info('DUT executing: ' + execute)
           utils.shellCommand(execute).run()
 
-          # convert to HEX memory initialization file
-          execute = 'make -C ./sim clean main.hex'
-          logger.debug('DUT executing ' + execute)
+          #execute = 'cp ./tb/main.sig {0}/main.signature'.format(rel_test_dir)
+          execute = 'cp ./tb/main.sig {0}/DUT-cv32e40p.signature'.format(rel_test_dir)
+          logger.info('DUT executing: ' + execute)
           utils.shellCommand(execute).run()
 
-          # prepare run of GHDL simulation
-          execute = 'sh ./sim/ghdl_run.sh'
-          # set TB generics according to MARCH test case
-          if "e" in marchstr:
-              execute += ' -gRISCV_E=true'
-          if "m" in marchstr:
-              execute += ' -gRISCV_M=true'
-          # 'privilege' tests also require C extension
-          if "c" in marchstr or "privilege" in test:
-              execute += ' -gRISCV_C=true'
-          if "b" in marchstr:
-              execute += ' -gRISCV_B=true'
-          if "u" in marchstr:
-              execute += ' -gRISCV_U=true'
-          logger.debug('DUT executing ' + execute)
-          utils.shellCommand(execute).run()
+          #exit(0)
 
-          # debug output
-          print(f"{test=}")
+          ## neorv32-specific - dirrrty shell stuff! ;)
+          ## copy ELF to sim folder
+          #execute = 'cp -f {0}/{1} ./sim/{1}'.format(test_dir, elf)
+          #logger.debug('DUT executing ' + execute)
+          #utils.shellCommand(execute).run()
 
-          # copy resulting signature file
-          execute = 'cp -f ./sim/*.signature {0}/.'.format(test_dir)
-          logger.debug('DUT executing ' + execute)
-          utils.shellCommand(execute).run()
+          ## convert to HEX memory initialization file
+          #execute = 'make -C ./sim clean main.hex'
+          #logger.debug('DUT executing ' + execute)
+          #utils.shellCommand(execute).run()
 
+          ## prepare run of GHDL simulation
+          #execute = 'sh ./sim/ghdl_run.sh'
+          ## set TB generics according to MARCH test case
+          #if "e" in marchstr:
+          #    execute += ' -gRISCV_E=true'
+          #if "m" in marchstr:
+          #    execute += ' -gRISCV_M=true'
+          ## 'privilege' tests also require C extension
+          #if "c" in marchstr or "privilege" in test:
+          #    execute += ' -gRISCV_C=true'
+          #if "b" in marchstr:
+          #    execute += ' -gRISCV_B=true'
+          #if "u" in marchstr:
+          #    execute += ' -gRISCV_U=true'
+
+          ##logger.debug('DUT executing ' + execute)
+          #utils.shellCommand(execute).run()
+
+          ## debug output
+          #print(f"{test=}")
+
+          ## copy resulting signature file
+          #execute = 'cp -f ./sim/*.signature {0}/.'.format(test_dir)
+          #logger.debug('DUT executing ' + execute)
+          #utils.shellCommand(execute).run()
+
+      logger.info('****************Finished runTests****************')
 
       # if target runs are not required then we simply exit as this point after running all
       # the makefile targets.

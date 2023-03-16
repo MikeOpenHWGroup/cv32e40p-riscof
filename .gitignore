@@ -15,3 +15,5 @@ riscof_work
 *.readelf
 *.objdump
 *.vcd
+
+tb*/main.*
