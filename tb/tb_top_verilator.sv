@@ -70,29 +70,29 @@ module tb_top_verilator #(
     // check if we succeded
     always_ff @(posedge clk_i, negedge rst_ni) begin: catch_exit
         integer cnt;
-        if (!rst_ni) begin
+        if (!rst_ni) begin: reset
             cnt = 0;
         end
-        else begin
+        else begin: not_reset
             if (!(++cnt%10_000)) $display("%m @ %0t: tick", $time);
             if (cnt >= 20_000) $finish;
 
-            if (tests_passed_o) begin
+            if (tests_passed_o) begin: passed
                 $display("%m @ %0t: ALL TESTS PASSED", $time);
                 $finish;
             end
-            if (tests_failed_o) begin
+            if (tests_failed_o) begin: failed
                 $display("%m @ %0t: TEST(S) FAILED!", $time);
                 $finish;
             end
-            if (exit_valid) begin
+            if (exit_valid) begin: exit
                 if (exit_value == 0)
                     $display("%m @ %0t: EXIT SUCCESS", $time);
                 else
                     $display("%m @ %0t: EXIT FAILURE: %d", exit_value, $time);
                 $finish;
             end
-        end
+        end: not_reset
     end: catch_exit
 
     // wrapper for cv32e40p, the memory system and stdout peripheral
