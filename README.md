@@ -1,4 +1,4 @@
-# CV32E40P RISCV Compliance using RISCOF
+# CV32E40P RISC-V Architectural Compatibility Testing using RISCOF
 
 Note: still a work-in-progress.
 
@@ -91,3 +91,17 @@ The simulation scripts and the makefile for compiling and running the simulation
 This Python script makes extensive use of shell commands to move and execute files and scripts.
 
 [[back to top](#CV32E40P-RISCV-Compliance-using-RISCOF)]
+
+## Simulation Environment and Testbench
+
+The [RISC-V Architectural Compatibility Test](https://docs.google.com/document/d/1HOH_3kIppF7JdCPgkXhCcaFPm5_Tv3c7c3pGwrNFz4o/0) document specifies that
+implementers must provide a simulation environment with sufficient resources to run the required ACT tests.
+What this means is that there exists an interdependancy between the programming environment and the testbench, and _you_ must resolve these interdependancies.
+There are several key considerations:
+1. **Memory Capacity**: RISCOF assumes a flat memory space of at least 4MBytes.  If your simulator supports it, consider using a sparse memory for this.
+2. **Signaling Test Completion**: individual test-programs that run on your core will signal when the test is complete.  Your testbench must detect this and terminate the simulation.
+3. **Writing a "Signature"**: test-programs generate a test-specific "signature" which is to be written to a file.  Your testbench must detect this and direct it to a file.
+
+READMEs in [`tb`](https://github.com/MikeOpenHWGroup/cv32e40p-riscof/tree/main/tb/README.md) and
+[`plugin-cv32e40p/env`](https://github.com/MikeOpenHWGroup/cv32e40p-riscof/tree/main/plugin-cv32e40p/env/README.md)
+directories of this repo attempt to document how this is done.
