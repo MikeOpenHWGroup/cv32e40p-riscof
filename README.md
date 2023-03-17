@@ -8,9 +8,9 @@
 
 1. [Prerequisites](#Prerequisites)
 2. [Setup Configuration](#Setup-Configuration)
-3. [Plugin for the Device-Under-Test](#Plugin for the Device-Under-Test)
-4. [DUT Simulation Environment and Testbench](#DUT Simulation Environment and Testbench)
-5. [Running the Compliance Suite](#Running the Compliance Suite)
+3. [Plugin for the Device-Under-Test](#Plugin-for-the-Device-Under-Test)
+4. [DUT Simulation Environment and Testbench](#DUT-Simulation-Environment-and-Testbench)
+5. [Running the Compliance Suite](#Running-the-Compliance-Suite)
 
 This repository is a port of the "**RISCOF** RISC-V Architectural Test Framework" to test the
 [CV32E40P RISC-V Processor](https://github.com/openhwgroup/cv32e40p) for compatibility to the RISC-V ISA specifications.
