@@ -17,3 +17,4 @@ riscof_work
 *.vcd
 
 tb*/main.*
+cv32e40p

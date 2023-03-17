@@ -1,0 +1,9 @@
+diff --git a/cv32e40p/cv32e40p_manifest.flist b/cv32e40p/cv32e40p_manifest.flist
+index 697bafc..767a51d 100644
+--- a/cv32e40p/cv32e40p_manifest.flist
++++ b/cv32e40p/cv32e40p_manifest.flist
+@@ -60,4 +60,3 @@ ${DESIGN_RTL_DIR}/cv32e40p_wrapper.sv
+ 
+ ${DESIGN_RTL_DIR}/../bhv/cv32e40p_sim_clock_gate.sv
+ ${DESIGN_RTL_DIR}/../bhv/include/cv32e40p_tracer_pkg.sv
+-${DESIGN_RTL_DIR}/../bhv/cv32e40p_tb_wrapper.sv

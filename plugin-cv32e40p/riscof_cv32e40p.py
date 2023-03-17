@@ -19,8 +19,6 @@ logger = logging.getLogger()
 
 class cv32e40p(pluginTemplate):
     __model__ = "cv32e40p"
-
-    #TODO: please update the below to indicate family, version, etc of your DUT.
     __version__ = "v1.0.0"
 
     def __init__(self, *args, **kwargs):
@@ -150,7 +148,6 @@ class cv32e40p(pluginTemplate):
           logger.info('Relative path to test_dir: {0}'.format(rel_test_dir))
 
           # name of the elf file after compilation of the test
-          #elf = 'main.elf'
           elf = 'main'
           elf_full = 'main.elf'
 
@@ -190,45 +187,6 @@ class cv32e40p(pluginTemplate):
           execute = 'cp ./tb/main.sig {0}/DUT-cv32e40p.signature'.format(rel_test_dir)
           logger.info('DUT executing: ' + execute)
           utils.shellCommand(execute).run()
-
-          #exit(0)
-
-          ## neorv32-specific - dirrrty shell stuff! ;)
-          ## copy ELF to sim folder
-          #execute = 'cp -f {0}/{1} ./sim/{1}'.format(test_dir, elf)
-          #logger.debug('DUT executing ' + execute)
-          #utils.shellCommand(execute).run()
-
-          ## convert to HEX memory initialization file
-          #execute = 'make -C ./sim clean main.hex'
-          #logger.debug('DUT executing ' + execute)
-          #utils.shellCommand(execute).run()
-
-          ## prepare run of GHDL simulation
-          #execute = 'sh ./sim/ghdl_run.sh'
-          ## set TB generics according to MARCH test case
-          #if "e" in marchstr:
-          #    execute += ' -gRISCV_E=true'
-          #if "m" in marchstr:
-          #    execute += ' -gRISCV_M=true'
-          ## 'privilege' tests also require C extension
-          #if "c" in marchstr or "privilege" in test:
-          #    execute += ' -gRISCV_C=true'
-          #if "b" in marchstr:
-          #    execute += ' -gRISCV_B=true'
-          #if "u" in marchstr:
-          #    execute += ' -gRISCV_U=true'
-
-          ##logger.debug('DUT executing ' + execute)
-          #utils.shellCommand(execute).run()
-
-          ## debug output
-          #print(f"{test=}")
-
-          ## copy resulting signature file
-          #execute = 'cp -f ./sim/*.signature {0}/.'.format(test_dir)
-          #logger.debug('DUT executing ' + execute)
-          #utils.shellCommand(execute).run()
 
       logger.info('****************Finished runTests****************')
 

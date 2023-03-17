@@ -10,7 +10,7 @@ hart0:
   physical_addr_sz: 32
   User_Spec_Version: "2.3" # TODO: what is v2.3?
   Privilege_Spec_Version: "1.11"
-  hw_data_misaligned_support: True
+  hw_data_misaligned_support: False
 #  pmp_granularity: 4  # TODO: can this be set to zero or deleted?
   supported_xlen: [32]
   misa:
