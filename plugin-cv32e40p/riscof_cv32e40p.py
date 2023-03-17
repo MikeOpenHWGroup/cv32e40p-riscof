@@ -60,7 +60,7 @@ class cv32e40p(pluginTemplate):
             self.target_run = True
 
         # Return the parameters set above back to RISCOF for further processing.
-        logger.info('****************Finished __init__****************')
+        logger.debug('****************Finished __init__****************')
         return sclass
 
     def initialise(self, suite, work_dir, archtest_env):
@@ -88,13 +88,12 @@ class cv32e40p(pluginTemplate):
        #utils.shellCommand(execute).run()
 
        # prepare simulation with Verilator
-       execute = 'make -C ./tb verilate'
+       execute = 'make -C ./plugin-cv32e40p/tb verilate'
        logger.debug('DUT executing ' + execute)
        utils.shellCommand(execute).run()
 
        # add more utility snippets here
-       logger.info('****************Finished initialise****************')
-       #exit(0)
+       logger.debug('****************Finished initialise****************')
 
     def build(self, isa_yaml, platform_yaml):
 
@@ -119,8 +118,7 @@ class cv32e40p(pluginTemplate):
       #      not please change appropriately
       self.compile_cmd = self.compile_cmd+' -mabi='+('lp64 ' if 64 in ispec['supported_xlen'] else 'ilp32 ')
 
-      logger.info('****************Finished build****************')
-      #exit(0)
+      logger.debug('****************Finished build****************')
 
 #The following template only uses shell commands to compile and run the tests.
 
@@ -179,7 +177,7 @@ class cv32e40p(pluginTemplate):
 
 
           # cv32e40p-specific - dirrrty shell stuff! ;)
-          execute = 'make -C tb veri-test TEST_PROGRAM_RELPATH=../{0} TEST={1}'.format(rel_test_dir, elf)
+          execute = 'make -C plugin-cv32e40p/tb veri-test TEST_PROGRAM_RELPATH=../{0} TEST={1}'.format(rel_test_dir, elf)
           logger.info('DUT executing: ' + execute)
           utils.shellCommand(execute).run()
 
@@ -188,7 +186,7 @@ class cv32e40p(pluginTemplate):
           logger.info('DUT executing: ' + execute)
           utils.shellCommand(execute).run()
 
-      logger.info('****************Finished runTests****************')
+      logger.debug('****************Finished runTests****************')
 
       # if target runs are not required then we simply exit as this point after running all
       # the makefile targets.

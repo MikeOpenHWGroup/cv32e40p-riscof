@@ -11,6 +11,7 @@ riscof_work
 *.hex
 *.out
 *.signature
+*.sig
 *.cf
 *.readelf
 *.objdump
@@ -18,3 +19,4 @@ riscof_work
 
 tb*/main.*
 cv32e40p
+.clang-format

@@ -1,7 +1,5 @@
 # CV32E40P RISC-V Architectural Compatibility Testing using RISCOF
 
-Note: still a work-in-progress.
-
 <!--
 [![neorv32-riscof](https://img.shields.io/github/actions/workflow/status/stnolting/neorv32-riscof/main.yml?branch=main&longCache=true&style=flat-square&label=neorv32-riscof&logo=Github%20Actions&logoColor=fff)](https://github.com/stnolting/neorv32-riscof/actions/workflows/main.yml)
 [![License](https://img.shields.io/github/license/stnolting/neorv32-riscof?longCache=true&style=flat-square&label=License)](https://github.com/stnolting/neorv32-riscof/blob/main/LICENSE)
@@ -10,7 +8,9 @@ Note: still a work-in-progress.
 
 1. [Prerequisites](#Prerequisites)
 2. [Setup Configuration](#Setup-Configuration)
-3. [Device-Under-Test (DUT)](#Device-Under-Test-DUT)
+3. [Plugin for the Device-Under-Test](#Plugin for the Device-Under-Test)
+4. [DUT Simulation Environment and Testbench](#DUT Simulation Environment and Testbench)
+5. [Running the Compliance Suite](#Running the Compliance Suite)
 
 This repository is a port of the "**RISCOF** RISC-V Architectural Test Framework" to test the
 [CV32E40P RISC-V Processor](https://github.com/openhwgroup/cv32e40p) for compatibility to the RISC-V ISA specifications.
@@ -30,38 +30,29 @@ and borrows heavily from the
 
 ## Prerequisites
 
-This repository uses `git submodules` to bring in the CV32E40P RTL and the RISC-V Architecture tests.
-You will need to clone this repo using the `--recursive` flag.
-
-Several tools and submodules are required to run this port of the architecture test framework. The repository's
-GitHub [Actions workflow](https://github.com/stnolting/neorv32-riscof/blob/main/.github/workflows/main.yml)
-takes care of installing all the required packages.
-
-* [cv32e40p](https://github.com/stnolting/neorv32) submodule - the device under test (DUT)
-* [riscv-arch-test](https://github.com/riscv-non-isa/riscv-arch-test) submodule - architecture test cases
+* [cv32e40p](https://github.com/openhwgroup/cv32e40p) - the device under test (DUT)
+* [riscv-arch-test](https://github.com/riscv-non-isa/riscv-arch-test) - architectural compatibility test cases
 * [RISC-V GCC toolchain](https://github.com/riscv/riscv-gnu-toolchain) - recommend you follow the installation specified in RISCOF Quick Start
-* [Sail RISC-V](https://github.com/riscv/sail-riscv) - the reference model (pre-built binary in the[`bin`](https://github.com/stnolting/neorv32-riscof/tree/main/bin) folder)
+* [Sail RISC-V](https://github.com/riscv/sail-riscv) - the reference model (there is a pre-built binary in the `bin` directory of this repo)
 * [RISCOF](https://github.com/riscv-software-src/riscof) - the architecture test framework
 * [Verilator](https://github.com/verilator/verilator) to simulate the SystemVerilog RTL model of the CV32E40P
 
-The framework (running all tests) is invoked via a single shell script **run.sh** that returns 0 if all tests were executed successfully or 1 if there were _any_ errors.
-The exit code of this script is used to determine the overall success of the GitHub Actions workflow.
+This repository uses `git submodules` to bring in the CV32E40P RTL and the RISC-V Architecture tests.
 
 [[back to top](#CV32E40P-RISCV-Compliance-using-RISCOF)]
 
 
 ## Setup Configuration
 
-The RISCOF **config.ini** is used to configure
-the plugins to be used: the device-under-test ("DUT") and the reference model ("REF").
+The file **config.ini** is the RISCOF setup configuration.
+It specifies the _plugins_ to be used: one for the device-under-test ("DUT") and the reference model ("REF").
 The ISA, debug and platform specifications, which define target-specific configurations like available ISA
-extensions, ISA spec. versions and platform modules (like MTIME), are defined by `YAML` files in the according
-plugin folder.
+extensions, ISA spec. versions and platform modules (like MTIME), are defined by `YAML` files in the according plugin folder.
 
-* DUT: `cv32e40p` in [`plugin-cv32e40p`](https://github.com/MikeOpenHWGroup/cv32e40p-riscof/tree/main/plugin-cv32e40p)
-* REF: `sail_cSim` in [`plugin-sail_cSim`](https://github.com/MikeOpenHWGroup/cv32e40p-riscof/tree/main/plugin-sail_cSim)
+* DUT: `cv32e40p` in directory **plugin-cv32e40p**
+* REF: `sail_cSim` in directory **plugin-sail_cSim**
 
-Each plugin folder also provides low-level _environment_ files like linker scripts (to generate an executable
+Each plugin directory also provides low-level _environment_ files like linker scripts (to generate an executable
 matching the target's memory layout) and platform-specific code (for example to initialize the target and
 to dump the final test signatures/results).
 
@@ -69,7 +60,7 @@ The official [RISC-V architecture tests](https://github.com/riscv-non-isa/riscv-
 provides test cases for all (ratified) RISC-V ISA extensions (user and privilege ISA).
 Each test case checks a single instruction or core feature and is compiled into a plugin-specific executable using a RISC-V GCC toolchain.
 
-The reference data is generated by the **Sail RISC-V Model**.
+The reference data is generated by the `Sail RISC-V Model`.
 This data is compared against the results of the DUT.
 <!-- TODO:
 The final test report is made available as CSS-flavored HTML file via the [GitHib actions artifact](https://github.com/OpenHWGroup/cv32e40p-riscof/actions).
@@ -81,18 +72,24 @@ The final test report is made available as CSS-flavored HTML file via the [GitHi
 
 [[back to top](#CV32E40P-RISCV-Compliance-using-RISCOF)]
 
-## Device-Under-Test (DUT)
-
-The [`tb`](https://github.com/MikeOpenHWGroup/cv32e40p-riscof/tree/main/tb) directory provides a simple SystemVerilog testbench
-and shell scripts to simulate the CV32E40P processor using **Verilator**.
+## Plugin for the Device-Under-Test
 
 The simulation scripts and the makefile for compiling and running the simulation is invoked from a DUT- specific Python script in the DUT's plugin folder
-(-> [`plugin-cv32e40p/riscof_cv32e40p.py`](https://github.com/MikeOpenHWGroup/cv32e40p-riscof/blob/main/plugin-cv32e40p/riscof_cv32e40p.py)).
+(`plugin-cv32e40p/riscof_cv32e40p.py`).
 This Python script makes extensive use of shell commands to move and execute files and scripts.
+
+The `plugin-cv32e40p/tb` directory provides a simple SystemVerilog testbench
+and Makefile to simulate the CV32E40P processor using **Verilator**.
+The general form of the `make` command is:
+```
+$ make -C plugin-cv32e40p/tb veri-test TEST_PROGRAM_RELPATH=<path_to_test> TEST<test>
+```
+Note that unless you are debugging a specific test, you will not need to invoke `make` yourself,
+the `riscof` command does this for you.
 
 [[back to top](#CV32E40P-RISCV-Compliance-using-RISCOF)]
 
-## Simulation Environment and Testbench
+## DUT Simulation Environment and Testbench
 
 The [RISC-V Architectural Compatibility Test](https://docs.google.com/document/d/1HOH_3kIppF7JdCPgkXhCcaFPm5_Tv3c7c3pGwrNFz4o/0) document specifies that
 implementers must provide a simulation environment with sufficient resources to run the required ACT tests.
@@ -102,6 +99,9 @@ There are several key considerations:
 2. **Signaling Test Completion**: individual test-programs that run on your core will signal when the test is complete.  Your testbench must detect this and terminate the simulation.
 3. **Writing a "Signature"**: test-programs generate a test-specific "signature" which is to be written to a file.  Your testbench must detect this and direct it to a file.
 
-READMEs in [`tb`](https://github.com/MikeOpenHWGroup/cv32e40p-riscof/tree/main/tb/README.md) and
-[`plugin-cv32e40p/env`](https://github.com/MikeOpenHWGroup/cv32e40p-riscof/tree/main/plugin-cv32e40p/env/README.md)
-directories of this repo attempt to document how this is done.
+READMEs in `plugin-cv32e40p/tb`and `plugin-cv32e40p/env` directories of this repo attempt to document how this is done.
+
+## Running the Compliance Suite
+
+The framework (running all tests) is invoked via a single shell script **run.sh** that returns 0 if all tests were executed successfully or 1 if there were _any_ errors.
+
