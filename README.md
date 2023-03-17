@@ -39,7 +39,7 @@ and borrows heavily from the
 
 This repository uses `git submodules` to bring in the CV32E40P RTL and the RISC-V Architecture tests.
 
-[[back to top](#CV32E40P-RISCV-Compliance-using-RISCOF)]
+[[back to top](#CV32E40P-RISC-V-Architectural-Compatibility-Testing-using-RISCOF)]
 
 
 ## Setup Configuration
@@ -70,7 +70,7 @@ The final test report is made available as CSS-flavored HTML file via the [GitHi
 ([here](https://riscof.readthedocs.io/en/stable/installation.html#install-riscv-gnu-toolchain) and
 [here](https://riscof.readthedocs.io/en/stable/installation.html#install-plugin-models)).
 
-[[back to top](#CV32E40P-RISCV-Compliance-using-RISCOF)]
+[[back to top](#CV32E40P-RISC-V-Architectural-Compatibility-Testing-using-RISCOF)]
 
 ## Plugin for the Device-Under-Test
 
@@ -86,8 +86,6 @@ $ make -C plugin-cv32e40p/tb veri-test TEST_PROGRAM_RELPATH=<path_to_test> TEST<
 ```
 Note that unless you are debugging a specific test, you will not need to invoke `make` yourself,
 the `riscof` command does this for you.
-
-[[back to top](#CV32E40P-RISCV-Compliance-using-RISCOF)]
 
 ## DUT Simulation Environment and Testbench
 
@@ -105,3 +103,4 @@ READMEs in `plugin-cv32e40p/tb`and `plugin-cv32e40p/env` directories of this rep
 
 The framework (running all tests) is invoked via a single shell script **run.sh** that returns 0 if all tests were executed successfully or 1 if there were _any_ errors.
 
+[[back to top](#CV32E40P-RISC-V-Architectural-Compatibility-Testing-using-RISCOF)]
