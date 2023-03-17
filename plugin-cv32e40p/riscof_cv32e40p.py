@@ -177,12 +177,11 @@ class cv32e40p(pluginTemplate):
 
 
           # cv32e40p-specific - dirrrty shell stuff! ;)
-          execute = 'make -C plugin-cv32e40p/tb veri-test TEST_PROGRAM_RELPATH=../{0} TEST={1}'.format(rel_test_dir, elf)
+          execute = 'make -C plugin-cv32e40p/tb veri-test TEST_PROGRAM_RELPATH=../../{0} TEST={1}'.format(rel_test_dir, elf)
           logger.info('DUT executing: ' + execute)
           utils.shellCommand(execute).run()
 
-          #execute = 'cp ./tb/main.sig {0}/main.signature'.format(rel_test_dir)
-          execute = 'cp ./tb/main.sig {0}/DUT-cv32e40p.signature'.format(rel_test_dir)
+          execute = 'cp ./plugin-cv32e40p/tb/main.sig {0}/DUT-cv32e40p.signature'.format(rel_test_dir)
           logger.info('DUT executing: ' + execute)
           utils.shellCommand(execute).run()
 
