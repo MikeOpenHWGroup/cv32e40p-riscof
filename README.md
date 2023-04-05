@@ -47,7 +47,7 @@ This repository uses `git submodules` to bring in the CV32E40P RTL and the RISC-
 The file **config.ini** is the RISCOF setup configuration.
 It specifies the _plugins_ to be used: one for the device-under-test ("DUT") and the reference model ("REF").
 The ISA, debug and platform specifications, which define target-specific configurations like available ISA
-extensions, ISA spec. versions and platform modules (like MTIME), are defined by `YAML` files in the according plugin folder.
+extensions, ISA specification version(s) and platform modules (like MTIME), are defined by `YAML` files in the according plugin folder.
 
 * DUT: `cv32e40p` in directory **plugin-cv32e40p**
 * REF: `sail_cSim` in directory **plugin-sail_cSim**
@@ -82,7 +82,7 @@ The `plugin-cv32e40p/tb` directory provides a simple SystemVerilog testbench
 and Makefile to simulate the CV32E40P processor using **Verilator**.
 The general form of the `make` command is:
 ```
-$ make -C plugin-cv32e40p/tb veri-test TEST_PROGRAM_RELPATH=<path_to_test> TEST<test>
+$ make -C plugin-cv32e40p/tb veri-test TEST_PROGRAM_RELPATH=<path_to_test> TEST=<test>
 ```
 Note that unless you are debugging a specific test, you will not need to invoke `make` yourself,
 the `riscof` command does this for you.
