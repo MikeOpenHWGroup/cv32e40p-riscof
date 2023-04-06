@@ -97,7 +97,7 @@ There are several key considerations:
 2. **Signaling Test Completion**: individual test-programs that run on your core will signal when the test is complete.  Your testbench must detect this and terminate the simulation.
 3. **Writing a "Signature"**: test-programs generate a test-specific "signature" which is to be written to a file.  Your testbench must detect this and direct it to a file.
 
-READMEs in `plugin-cv32e40p/tb`and `plugin-cv32e40p/env` directories of this repo attempt to document how this is done.
+TODO: READMEs in `plugin-cv32e40p/tb`and `plugin-cv32e40p/env` directories of this repo attempt to document how this is done.
 
 ## Running the Compliance Suite
 
