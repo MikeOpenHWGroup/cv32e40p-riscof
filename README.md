@@ -15,7 +15,7 @@
 This repository is a port of the "**RISCOF** RISC-V Architectural Test Framework" to test the
 [CV32E40P RISC-V Processor](https://github.com/openhwgroup/cv32e40p) for compatibility to the RISC-V ISA specifications.
 **Sail RISC-V** is used as reference model.
-Currently, the following tests are supported:
+Currently, the following test suites are supported:
 
 - [x] `rv32i_m\C` - compressed instructions
 - [x] `rv32i_m\I` - base integer ISA
@@ -74,7 +74,7 @@ The final test report is made available as CSS-flavored HTML file via the [GitHi
 
 ## Plugin for the Device-Under-Test
 
-The simulation scripts and the makefile for compiling and running the simulation is invoked from a DUT- specific Python script in the DUT's plugin folder
+The simulation scripts and the makefile for compiling and running the simulation is invoked from a DUT-specific Python script in the DUT's plugin folder
 (`plugin-cv32e40p/riscof_cv32e40p.py`).
 This Python script makes extensive use of shell commands to move and execute files and scripts.
 
