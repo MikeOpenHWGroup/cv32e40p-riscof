@@ -2,27 +2,25 @@
 # https://riscv-config.readthedocs.io/en/latest/yaml-specs.html#platform-yaml-spec
 # SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
 
-# I believe, don't know, that this is the boot_addr_i of the CV32E40P
-reset:
-  address: 0x00000080
-
 # The CV32E40P does not support NMIs, but this seems to be a required field...
 nmi:
   label: nmi_vector
+reset:
+  label: reset_vector
 
 # CV32E40P does not implement mtime
-mtime:
-  implemented: false
-  address: 0xFFFFFF90
+#mtime:
+#  implemented: false
+#  address: 0xFFFFFF90
 
 # CV32E40P does not implement mtimecmp
-mtimecmp:
-  implemented: false
-  address: 0xFFFFFF98
+#mtimecmp:
+#  implemented: false
+#  address: 0xFFFFFF98
 
 # CV32E40P does not implement mtval
-mtval_condition_writes:
-  implemented: false
+#mtval_condition_writes:
+#  implemented: false
 #  behaviour:
 #    e00: "[0x00000000:0x00000000], 'Instruction fetch - address that was misaligned'"
 #    e01: "[0x00000000:0x00000000], 'Instruction fetch - address that triggered a bus exception'"

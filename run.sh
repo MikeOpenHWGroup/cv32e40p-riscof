@@ -6,6 +6,20 @@ set -e
 
 cd $(dirname "$0")
 
+# For reasons known only to the Gods of RISCOF, the generated -march switch for
+# the cross-compiler do not contain the Zifencei extension, even if it is asked
+# for in the DUT configuration YAML.  Therefore, you are required to run with
+# at least version 12.2 (which supports Zifencei by default).
+echo -n "Testing your version of riscv32-unknown-elf-gcc.    "
+currentver="$(riscv32-unknown-elf-gcc -dumpversion)"
+requiredver="12.2.0"
+if [ "$(printf '%s\n' "$requiredver" "$currentver" | sort -V | head -n1)" = "$requiredver" ]; then
+        echo "Greater than or equal to ${requiredver}... continuing..."
+	echo ""
+else
+        echo "Less than ${requiredver}... exiting..."
+	exit 1
+fi
 
 echo "Running RISC-V Compliance Framework on CV32E40P v1.0.0"
 echo "Before running \"riscof\", this command will:"
@@ -39,7 +53,10 @@ echo ""
 sleep 2
 
 # run riscof
-riscof run --config=config.ini \
+#riscof --verbose debug \
+riscof \
+	   run \
+           --config=config.ini \
            --suite=riscv-arch-test/riscv-test-suite/ \
            --env=riscv-arch-test/riscv-test-suite/env \
            --no-browser

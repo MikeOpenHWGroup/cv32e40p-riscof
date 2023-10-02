@@ -23,10 +23,12 @@ module riscof_cv32e40p_tb_wrapper
                 DM_HALTADDRESS    = 32'h1A11_0800,
                 HART_ID           = 32'h0000_0000,
                 // Parameters used by DUT
-                PULP_XPULP        = 0,
-                PULP_CLUSTER      = 0,
-                FPU               = 0,
-                PULP_ZFINX        = 0,
+                COREV_PULP        = 0,
+                COREV_CLUSTER     = 0,
+                FPU               = 0,  // Floating-Point Unit
+                FPU_ADDMUL_LAT    = 0,  // Floating-Point ADDition/MULtiplication lane pipeline registers number
+                FPU_OTHERS_LAT    = 0,  // Floating-Point COMParison/CONVersion lanes pipeline registers number
+                ZFINX             = 0,  // Float-in-General Purpose registers
                 NUM_MHPMCOUNTERS  = 1
     )
     (input logic         clk_i,
@@ -68,30 +70,15 @@ module riscof_cv32e40p_tb_wrapper
     // interrupts (only timer for now)
     assign irq_sec     = '0;
 
-//    // core log reports parameter usage and illegal instructions to the logfile
-//    // MIKET: commenting out as the cv32e40p RTL wrapper does this as well.
-//    cv32e40p_core_log
-//     #(
-//          .PULP_XPULP            ( PULP_XPULP            ),
-//          .PULP_CLUSTER          ( PULP_CLUSTER          ),
-//          .FPU                   ( FPU                   ),
-//          .PULP_ZFINX            ( PULP_ZFINX            ),
-//          .NUM_MHPMCOUNTERS      ( NUM_MHPMCOUNTERS      ))
-//    core_log_i(
-//          .clk_i              ( cv32e40p_core_i.id_stage_i.clk              ),
-//          .is_decoding_i      ( cv32e40p_core_i.id_stage_i.is_decoding_o    ),
-//          .illegal_insn_dec_i ( cv32e40p_core_i.id_stage_i.illegal_insn_dec ),
-//          .hart_id_i          ( cv32e40p_core_i.hart_id_i                   ),
-//          .pc_id_i            ( cv32e40p_core_i.pc_id                       )
-//      );
-
     // instantiate the core
     cv32e40p_core #(
-                 .PULP_XPULP       (PULP_XPULP),
-                 .PULP_CLUSTER     (PULP_CLUSTER),
-                 .FPU              (FPU),
-                 .PULP_ZFINX       (PULP_ZFINX),
-                 .NUM_MHPMCOUNTERS (NUM_MHPMCOUNTERS)
+                 .COREV_PULP        ( COREV_PULP       ),
+                 .COREV_CLUSTER     ( COREV_CLUSTER    ),
+                 .FPU               ( FPU              ),
+                 .FPU_ADDMUL_LAT    ( FPU_ADDMUL_LAT   ),
+                 .FPU_OTHERS_LAT    ( FPU_OTHERS_LAT   ),
+                 .ZFINX             ( ZFINX            ),
+                 .NUM_MHPMCOUNTERS  ( NUM_MHPMCOUNTERS )
                 )
     cv32e40p_core_i
         (

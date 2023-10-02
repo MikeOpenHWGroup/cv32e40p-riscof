@@ -33,7 +33,7 @@ SIM_BSP_RESULTS          = $(SIM_TEST_PROGRAM_RESULTS)/bsp
 # verilator configuration
 VERILATOR           = verilator
 VERI_FLAGS         +=
-VERI_COMPILE_FLAGS += -Wno-BLKANDNBLK
+VERI_COMPILE_FLAGS += -Wno-BLKANDNBLK -Wno-MULTIDRIVEN -Wno-COMBDLY
 VERI_TRACE         ?=
 VERI_OBJ_DIR       ?= verilator_obj
 VERI_LOG_DIR       ?= $(SIM_TEST_PROGRAM_RESULTS)
